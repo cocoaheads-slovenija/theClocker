@@ -1,0 +1,11 @@
+{
+	"hash": {
+		"method": "sha256",
+		"key": "password"
+	},
+	"cipher": {
+		"method": "chacha20",
+		"key": "ahIQ6Zs9SG7lQHW1suqSH8LGOXI0ZpaK",
+		"iv": "password"
+	}
+}

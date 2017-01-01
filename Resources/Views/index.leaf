@@ -1,0 +1,12 @@
+#extend("base")
+
+#export("body") {
+	#if(authenticated) {
+		<h1>Hi #(account.username)!</h1>
+		<p>We've generated a set of API Keys for you, which you can use to grab your full profile data via Basic Authentication to <a href="/api/me"><code>/api/me</code></a>. Your API Key ID is: <code>#(account.api_key_id)</code>, and your secret: <code>#(account.api_key_secret)</code>.</p>
+		<p>You can use curl to test the API endpoint: </p>
+		<p><pre>curl -u #(account.api_key_id):#(account.api_key_secret) #(baseURL)/api/me</pre></p>
+	} ##else() {
+		<h1>Hi! <a href="/login">Sign up</a> today!</h1>
+	}
+}
