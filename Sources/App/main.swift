@@ -1,4 +1,5 @@
 import Vapor
+import VaporMemory
 import Auth
 import HTTP
 import Cookies
@@ -8,15 +9,18 @@ import TurnstileWeb
 import Fluent
 import Foundation
 
-let auth = AuthMiddleware<ClockerUser>()
+let drop = Droplet()
 
-// TODO: Replace this with an actual database...
-let database = Database(MemoryDriver())
+try drop.addProvider(VaporMemory.Provider.self)
 
-// TODO: The droplet needs to be constructed without using the deprecated methods...
-let drop = Droplet(database: database, availableMiddleware: ["auth": auth, "trustProxy": TrustProxyMiddleware()], preparations: [ClockerUser.self])
+drop.middleware.append(AuthMiddleware<ClockerUser>())
+drop.middleware.append(TrustProxyMiddleware())
+
+drop.preparations.append(ClockerUser.self)
+
 
 // MARK: - index page
+
 drop.get { request in
 	let user = try? request.user()
 
@@ -28,6 +32,7 @@ drop.get { request in
 
 	return try drop.view.make("index", dashboardView)
 }
+
 
 // MARK: - login / logout
 
@@ -53,6 +58,7 @@ drop.post("logout") { request in
 	return Response(redirect: "/")
 }
 
+
 // MARK: - register
 
 drop.get("register") { request in
@@ -73,6 +79,7 @@ drop.post("register") { request in
 		return try drop.view.make("register", Node(node: ["flash": e.description]))
 	}
 }
+
 
 // MARK: - Facebook auth
 
@@ -100,6 +107,7 @@ if let clientID = drop.config["app", "facebookClientID"]?.string, let clientSecr
 	}
 }
 
+
 // MARK: - Protected API
 
 let protect = ProtectMiddleware(error: Abort.custom(status: .unauthorized, message: "Unauthorized"))
@@ -109,5 +117,8 @@ drop.grouped(BasicAuthMiddleware(), protect).group("api") { api in
 		return try JSON(node: request.user().makeNode())
 	}
 }
+
+
+// MARK: - Run the server
 
 drop.run()
