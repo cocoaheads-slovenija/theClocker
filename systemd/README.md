@@ -2,7 +2,7 @@
 
 ## Files to deploy
 
-Create a release build of the app (`vapor build -c release`), and copy over the following files:
+Create a release build of the app (`swift build -c release`), and copy over the following files:
 
 ```shell
 cp -rv Config Public Resources .build/release/App .build/release/libCLibreSSL.so /opt/theClocker
