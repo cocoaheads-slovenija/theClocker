@@ -22,3 +22,16 @@ Copy the files for **theClocker** app to `/opt/theClocker`.
 
 Use `systemctl` to run the `clocker.service`.
 
+## Proxy setup
+
+In case the server is run behind a proxy (it should), the proxy should be set up to add an `X-base-URL` header to the request, which should hold the base URL string for the service. The base URL string should be complete, including the scheme to use: e.g. `https://host.domain.com`.
+
+### nginx
+
+```nginx
+location ~ {
+  proxy_set_header X-base-URL $scheme://$host;
+  proxy_pass http://127.0.0.1:8080;
+}
+```
+
