@@ -81,7 +81,8 @@ if let clientID = drop.config["app", "facebookClientID"]?.string, let clientSecr
 
 	drop.get("login", "facebook") { request in
 		let state = URandom().secureToken
-		let response = Response(redirect: facebook.getLoginLink(redirectURL: request.baseURL + "/login/facebook/consumer", state: state).absoluteString)
+		let redirectURL = request.baseURL + "/login/facebook/consumer"
+		let response = Response(redirect: facebook.getLoginLink(redirectURL: redirectURL, state: state).absoluteString)
 		response.cookies["OAuthState"] = state
 		return response
 	}
@@ -90,7 +91,9 @@ if let clientID = drop.config["app", "facebookClientID"]?.string, let clientSecr
 		guard let state = request.cookies["OAuthState"] else {
 			return Response(redirect: "/login")
 		}
-		let account = try facebook.authenticate(authorizationCodeCallbackURL: request.uri.description, state: state) as! FacebookAccount
+		// This is ugly, but the only way to get the Facebook stuff to work, we need to use the outer URL, otherwise things go bad!!
+		let callbackURL = request.baseURL + request.uri.path + (request.uri.query != nil ? "?" + (request.uri.query ?? "") : "")
+		let account = try facebook.authenticate(authorizationCodeCallbackURL: callbackURL, state: state) as! FacebookAccount
 		try request.auth.login(account)
 		return Response(redirect: "/")
 	}
