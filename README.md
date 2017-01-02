@@ -21,7 +21,20 @@ In the Valid OAuth redirect URIs box, type in your application's URL, postpended
 
 ### **Add your Client ID / Secret as Environment Variables**
 
-Create a file `Config/secrets/app.json` (this directory is under `.gitignore` and should never be committed  to the repository), with the following content:
+The code reads your Facebook client ID and secret from environment variables, and that mechanism is used on the server as well. Just set the following environment variables prior to running the code:
+
+```shell
+export FACEBOOK_CLIENT_ID="<your facebook app id>"
+export FACEBOOK_CLIENT_SECRET="<your facebook app secret>"
+```
+
+This is also possible in Xcode under `Edit Scheme > Arguments > Environment Variables`.
+
+#### Alternative
+
+Setting the environment variables on macOS might not work under all circumstances. Creating a secrets file will.
+
+Create the file `Config/secrets/app.json` (this directory is under `.gitignore` and should never be committed  to the repository), with the following content:
 
 ```json
 {
