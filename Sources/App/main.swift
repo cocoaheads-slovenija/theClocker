@@ -1,5 +1,5 @@
 import Vapor
-import VaporMemory
+import VaporSQLite
 import Auth
 import HTTP
 import Cookies
@@ -11,7 +11,7 @@ import Foundation
 
 let drop = Droplet()
 
-try drop.addProvider(VaporMemory.Provider.self)
+try drop.addProvider(VaporSQLite.Provider.self)
 
 drop.middleware.append(AuthMiddleware<ClockerUser>())
 drop.middleware.append(TrustProxyMiddleware())

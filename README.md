@@ -7,6 +7,23 @@ Visit the Vapor web framework's [documentation](http://docs.vapor.codes) for ins
 
 ## Running the server
 
+### Dependencies
+
+The project needs the `sqlite3` development libraries for the local data storage.
+
+On (Debian/Ubuntu) Linux this can be done with the command: `sudo apt install sqlite3`
+
+On a mac the it can be installed using either [brew](http://brew.sh): `brew install sqlite3`,
+or if you don't want to install HomeBrew on your mac (and you have the command line utilities from Xcode installed), by manually [downloading the sqlite sources](https://sqlite.org/download.html) (pick the "source code as an amalgamation" with the configure scripts), unpacking it on your computer, and running the following commands:
+
+```shell
+./configure --prefix=/usr/local/opt/sqlite
+make
+sudo make install
+```
+
+## Get to it already!
+
 Install the [Vapor toolbox](https://vapor.github.io/documentation/getting-started/install-toolbox.html), and build the project with `vapor build`.
 
 The server is run by running `vapor run serve`.
