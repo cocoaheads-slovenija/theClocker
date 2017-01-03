@@ -1,0 +1,38 @@
+#!/bin/bash
+
+root_dir=$(git rev-parse --show-toplevel 2> /dev/null)
+if [ -z "${root_dir}" ]; then
+	echo "Please move to the theClocker git repository" >&2
+	exit
+fi
+
+if [ ! -d "${root_dir}/scripts" -o ! -f "${root_dir}/Package.swift" ]; then
+	echo "Please move to the theClocker git repository" >&2
+	exit
+fi
+
+pushd "${root_dir}" &> /dev/null
+
+branch=$(git rev-parse --abbrev-ref HEAD)
+commit=$(git rev-parse --short HEAD)
+deploy="theClocker-${branch/\//_}-${commit}"
+archive="${deploy}.tar.bz2"
+
+echo "Starting build"
+
+swift build -c release
+
+echo "Creating deploy archive ${archive}"
+
+mkdir "${deploy}"
+
+cp .build/release/App "${deploy}/theClocker"
+cp .build/release/libCLibreSSL.* "${deploy}"
+cp -r {Config,Public,Resources} "${deploy}"
+
+tar --exclude Config/secrets -cjf "${archive}" "${deploy}"
+rm -rf "${deploy}"
+
+popd &> /dev/null
+
+mv "${root_dir}/${archive}" . 2> /dev/null

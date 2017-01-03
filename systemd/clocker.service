@@ -1,11 +1,11 @@
 [Unit]
 Description=theClocker app
-After=syslog.target
+After=syslog.target network.target mysql.service
 
 [Service]
 User=clocker
 WorkingDirectory=/opt/theClocker
-ExecStart=/opt/theClocker/App --env=production
+ExecStart=/opt/theClocker/theClocker --env=production
 Restart=on-abort
 EnvironmentFile=/etc/default/clocker.env
 

@@ -8,7 +8,13 @@ Create a release build of the app (`swift build -c release`), and copy over the 
 cp -rv Config Public Resources .build/release/App .build/release/libCLibreSSL.so /opt/theClocker
 ```
 
-- [ ] There will be a script to create deploy archives at some time.
+The `systemd` service file expects the binary to be named `theClocker`, not `App` as is the Vapor default. Rename the file accordingly. 
+
+## Deployment script
+
+A `create-deploy` script has been created in the `scripts` directory. Running this script from the `theClocker` repository will create a `.tar.bz2` archive that can be deployed to the server. (Make sure to run it on the appropriate platform, running it on macOS and deploying it on Linux will not work)
+
+The script renames `App` to `theClocker` before creating the archive.
 
 ## Startup scripts
 
@@ -20,7 +26,7 @@ Copy the file `clocker.service` to `/etc/systemd/system/clocker.service`, and `c
 
 Copy the files for **theClocker** app to `/opt/theClocker`.
 
-Use `systemctl` to run the `clocker.service`.
+Use `systemctl` to run the `clocker.service`. Don't forget to enable the service, so it runs after reboot.
 
 ## Proxy setup
 
