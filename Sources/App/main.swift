@@ -9,7 +9,7 @@ import TurnstileWeb
 import Fluent
 import Foundation
 
-let drop = Droplet()
+let drop = Droplet(workDir: "./")
 
 try drop.addProvider(VaporMemory.Provider.self)
 
@@ -17,7 +17,6 @@ drop.middleware.append(AuthMiddleware<ClockerUser>())
 drop.middleware.append(TrustProxyMiddleware())
 
 drop.preparations.append(ClockerUser.self)
-
 
 // MARK: - index page
 
