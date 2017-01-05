@@ -111,11 +111,18 @@ final class ClockerUser: User {
     }
 
 	class func prepare(_ database: Database) throws {
-		// TODO: This needs to be implemented when a real database gets used
+		try database.create("clockerusers") { users in
+			users.id()
+			users.string("username")
+			users.string("password")
+			users.string("facebook_id")
+			users.string("api_key_id")
+			users.string("api_key_secret")
+		}
 	}
 
 	static func revert(_ database: Database) throws {
-		// TODO: This needs to be implemented when a real database gets used
+		try database.delete("clockerusers")
 	}
 
 }
