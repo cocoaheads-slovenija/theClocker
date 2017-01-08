@@ -7,7 +7,7 @@
 //
 
 #if os(Linux)
-let workingDirectory: Strig = "./"
+let workingDirectory: String = "./"
 #else
 let workingDirectory: String = {
 	return "/\(#file.characters.split(separator: "/").map(String.init).dropLast().dropLast().dropLast().dropLast().joined(separator: "/"))/"
