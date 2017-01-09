@@ -17,6 +17,7 @@ drop.middleware.append(AuthMiddleware<ClockerUser>())
 drop.middleware.append(TrustProxyMiddleware())
 
 drop.preparations.append(ClockerUser.self)
+drop.preparations.append(Client.self)
 
 // MARK: - index page
 
@@ -32,6 +33,7 @@ drop.get { request in
 	return try drop.view.make("index", dashboardView)
 }
 
+drop.resource("clients", ClientsController())
 
 // MARK: - login / logout
 
