@@ -1,6 +1,8 @@
 # theClocker
 A vapor based time tracking server, part of the learner project.
 
+Please also read the documents in our umbrella [learner-project](https://github.com/cocoaheads-slovenija/learner-project).
+
 ## Documentation
 
 Visit the Vapor web framework's [documentation](http://docs.vapor.codes) for instructions on how to use Vapor.
