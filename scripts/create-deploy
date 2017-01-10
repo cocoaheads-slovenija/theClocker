@@ -18,7 +18,7 @@ commit=$(git rev-parse --short HEAD)
 deploy="theClocker-${branch/\//_}-${commit}"
 archive="${deploy}.tar.bz2"
 
-echo "Cleaning up"
+echo "Cleaning up before build"
 
 rm -rf .build Packages
 
@@ -45,6 +45,10 @@ cp -r {Config,Public,Resources} "${deploy}"
 
 tar --exclude Config/secrets -cjf "${archive}" "${deploy}"
 rm -rf "${deploy}"
+
+echo "Cleaning up after build"
+
+rm -rf .build Packages
 
 popd &> /dev/null
 
