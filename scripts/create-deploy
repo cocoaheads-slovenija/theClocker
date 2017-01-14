@@ -18,9 +18,22 @@ commit=$(git rev-parse --short HEAD)
 deploy="theClocker-${branch/\//_}-${commit}"
 archive="${deploy}.tar.bz2"
 
+echo "Cleaning up before build"
+
+rm -rf .build Packages
+
 echo "Starting build"
 
+mv Package.swift Package.swift.bak
+sed 's/vapor\/sqlite-provider\.git/vapor\/mysql-provider\.git/' Package.swift.bak > Package.swift
+
+mv Sources/App/main.swift Sources/App/main.swift.bak
+sed 's/VaporSQLite/VaporMySQL/' Sources/App/main.swift.bak > Sources/App/main.swift
+
 swift build -c release
+
+mv Package.swift.bak Package.swift
+mv Sources/App/main.swift.bak Sources/App/main.swift
 
 echo "Creating deploy archive ${archive}"
 
@@ -32,6 +45,10 @@ cp -r {Config,Public,Resources} "${deploy}"
 
 tar --exclude Config/secrets -cjf "${archive}" "${deploy}"
 rm -rf "${deploy}"
+
+echo "Cleaning up after build"
+
+rm -rf .build Packages
 
 popd &> /dev/null
 
