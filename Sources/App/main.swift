@@ -9,7 +9,7 @@ import TurnstileWeb
 import Fluent
 import Foundation
 
-let drop = Droplet(workDir: nil)
+let drop = Droplet(workDir: workingDirectory)
 
 try drop.addProvider(VaporSQLite.Provider.self)
 
